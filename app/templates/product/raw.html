@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="input-box">
+        <form method="POST">
+            <label>Bag No:</label>
+            <input type="number" name="bag_no" required placeholder=" ">
+
+            <label>KD:</label>
+            <input type="number" name="kd" required placeholder=" ">
+
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
+
+            <label>Weight(kg):</label>
+            <input type="number" step="0.01" name="weight" required placeholder=" ">
+
+            <label>Price:</label>
+            <input type="number" min="1" step="1" name="price" required placeholder=" ">
+            
+            <div class="input-box">
+                <label>Industory Name:</label>
+                <select name="name" required>
+                    <option value="">--- Industory Name ---</option>
+                    {% for n in allowed_names %}
+                        <option value="{{ n }}">{{ n }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button class="btn btn-green" type="submit">Save Product</button>
+        </form>
+    </div>
+</body>
+</html>

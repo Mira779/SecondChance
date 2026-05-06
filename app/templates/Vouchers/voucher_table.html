@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <h1 class="no-print">Voucher System</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+</head>
+
+<body>
+    <form method="POST" action="{{ url_for('voucher.invoice', voucher_id=voucher.id) }}">
+        <label>Name:</label>
+        <input type="text" name="name" required>
+
+        <table border="1">
+            <tr>
+                <th>No.</th>
+                <th>Size</th>
+                <th>Weight</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+
+            {% for item in sizes_prices %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.size }}
+                        <input type="hidden" class="size" name="size_{{ loop.index0 }}" value="{{ item.size }}">
+                    </td>
+                    <td>
+                        <input type="number" class="weight" name="weight_{{ loop.index0 }}" oninput="calctotal(this)" value="{{ item.weight }}" step="0.001" required>
+                    </td>
+                    <td>{{ item.price }}
+                        <input type="hidden" class="price" name="price_{{ loop.index0 }}" value="{{ item.price }}">
+                    </td>
+                    <td>
+                        <!-- This will fill total after submission -->
+                        {% if item.total is defined %}
+                            {{ item.total }}
+                        {% endif %}
+                    </td> 
+                    
+                        <!--
+                        <script>
+                        function calctotal(input) {
+                            let row = input.closest("tr");
+                            let size = parseFloat(query.querySelector('.size').value) || 0; 
+                            let weight = parseFloat(query.querySelector('.weight').value) || 0;
+                            let price = parseFloat(query.querySelector('.price').value) || 0;
+                            row.querySelector('.total').value = (weight * price).toFixed(2);
+                            }
+                        </script>
+                        -->
+
+                </tr>
+            {% endfor %}
+            <div class="top-bar">
+                <button class="btn btn-green btn-small" type="submit">SAVE</button>
+            </div>
+        </table>
+            
+    </form>
+
+</body>
+</html>
+

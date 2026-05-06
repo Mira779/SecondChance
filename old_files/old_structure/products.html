@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <h1>Products</h1>
+
+    <div class="top-actions">
+        <form class="search-box" method="GET" action="/products">
+            <input type="text" name="search" placeholder="Search item code, name" value="{{ search }}">
+            <button type="submit">Search</button>
+            <a class="btn" href="/products">Clear</a>
+        </form>
+        <a class="btn btn-green" href="/add">+ Add New Product</a>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>Item Code</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Buy</th>
+                <th>Sell</th>
+                <th>Quantity</th>
+                <th>Profit/Unit</th>
+                <th>Stock Value</th>
+                <th>Status</th>
+                <th style="text-align: center;">Actions</th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.item_code }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.buy_price }}</td>
+                <td>{{ product.sell_price }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.sell_price - product.buy_price }}</td>
+                <td>{{ product.buy_price * product.quantity }}</td>
+                <td>
+                    {% if product.quantity <= product.low_stock_limit %}
+                        <span style="color:red; font-weight:bold;">Low Stock</span>
+                    {% else %}
+                        <span style="color:green; font-weight:bold;">OK</span>
+                    {% endif %}
+                </td>
+                <td style="text-align:center;">
+                    <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+                        <a class="btn btn-green btn-small" href="/add_stock/{{ product.id }}">+Stock</a>
+                        <a class="btn btn-red btn-small" href="/sell/{{ product.id }}">Sell</a>
+                        <a class="btn btn-orange btn-small" href="/edit/{{ product.id }}">Edit</a>
+                        <form class="inline" action="/delete/{{ product.id }}" method="POST">
+                            <button class="btn btn-red btn-small" type="submit" onclick="return confirm('Delete this product?')">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% if not products %}
+        <p>No products found.</p>
+    {% endif %}
+
+{% endblock %}

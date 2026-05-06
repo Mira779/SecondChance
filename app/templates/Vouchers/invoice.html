@@ -1,0 +1,29 @@
+<h2>Invoice</h2>
+<p><strong>Voucher ID:</strong>{{ voucher.id }}</p>
+<p><strong>Date:</strong>{{ voucher.created_at }}</p>
+<div class="top-bar">
+    <button class="btn btn-orange btn-small" onclick="window.print()">Print</button>
+</div>
+
+<table border="1" width="100%">
+    <tr>
+        <th>No.</th>
+        <th>Size</th>
+        <th>Weight</th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+
+    {% for item in items %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ item.size }}</td>
+        <td>{{ item.wieght }}</td>
+        <td>{{ item.price }}</td>
+        <td>{{ item.weight * item.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Total: {{ voucher.grand_total }}</h3>
+

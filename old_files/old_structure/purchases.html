@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Purchases{% endblock %}
+{% block content %}
+<h1>Purchase History</h1>
+
+<table>
+<tr>
+    <th>Product ID</th>
+    <th>Qty</th>
+    <th>Buy Price</th>
+    <th>Date</th>
+</tr>
+{% for p in data %}
+<tr>
+    <td>{{ p.product.id }}</td>
+    <td>{{ p.quantity }}</td>
+    <td>{{ p.buy_price }}</td>
+    <td>{{ p.date }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

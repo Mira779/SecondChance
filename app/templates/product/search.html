@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <h1>Products</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<h2>Search Results for KD-"{{ query }}"</h2>
+
+<table>
+    <tr>
+        <th>No.</th>
+        <th>Item Code</th>
+        <th>Weight(Kg)</th>
+        <th>Price</th>
+        <th>Industory Name</th>
+        <th>Date</th>
+    </tr>
+
+    {% for r in raws %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ r.item_code }}</td>
+        <td>{{ r.weight }}</td>
+        <td>{{ r.price }}</td>
+        <td>{{ r.name }}</td>
+        <td>{{ r.created_at }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a class="btn btn-green" href="/products">Back</a>
+</html>

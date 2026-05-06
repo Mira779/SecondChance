@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:20px;">
+    <div class="card">
+        <h3>Total Products</h3>
+        <p>{{ total_products }}</p>
+    </div>
+    
+    <div class="card">
+        <h3>Stock Value</h3>
+        <p>{{ total_stock_value }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Low Stock Items</h3>
+        <p>{{ low_stock }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Expected Profit</h3>
+        <p>{{ total_profit }}</p>
+    </div>
+
+</div>
+{% endblock %} 

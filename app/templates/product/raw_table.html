@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <h1 class="no-print">Products</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="top-bar">
+        <button class="btn btn-small btn:hover no-print" onclick="window.print()">Print</button> 
+    </div>
+
+    <div class="top-bar">
+        <a class="btn btn-green btn-small no-print" action="{{ url_for('raw.raws') }}" href="/raws" method="POST">+ Add New Product</a>
+    </div>
+
+    <div class="top-actions no-print">
+        <form method="GET" action="/search">
+            <input type="text" name="q" placeholder="Search...">
+            <button class="btn btn-green btn-small " type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <th>No.</th>
+                <th>Item Code</th>
+                <th>Weight(kg)</th>
+                <th>Price</th>
+                <th>Industory Name</th>
+                <th>Date</th>
+                <th class="no-print" style="text-align: center;">Actions</th>
+            </tr>
+            {% for p in products %}
+            <tr>
+                <td>{{ loop.index }}</td> <!-- UI sequence numbers -->
+                <td>{{ p.item_code }}</td>
+                <td>{{ p.weight }}</td>
+                <td>{{ p.price }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.created_at }}</td>
+                <td class="no-print" style="text-align:center;">
+                    <div class="no-print" style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+                        <form class="inline" action="{{ url_for('raw.delete_product', id=p.id) }}" method="POST">
+                            <button class="btn btn-red btn-small" type="submit" onclick="return confirm('Delete this product?')">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
