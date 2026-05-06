@@ -24,13 +24,13 @@
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ item.size }}
-                        <input type="hidden" class="size" name="size_{{ loop.index0 }}" value="{{ item.size }}">
+                        <input type="hidden" name="size_{{ loop.index0 }}" value="{{ item.size }}">
                     </td>
                     <td>
-                        <input type="number" class="weight" name="weight_{{ loop.index0 }}" oninput="calctotal(this)" value="{{ item.weight }}" step="0.001" required>
+                        <input type="number" name="weight_{{ loop.index0 }}" value="{{ item.weight }}" step="0.001" required>
                     </td>
                     <td>{{ item.price }}
-                        <input type="hidden" class="price" name="price_{{ loop.index0 }}" value="{{ item.price }}">
+                        <input type="hidden" name="price_{{ loop.index0 }}" value="{{ item.price }}">
                     </td>
                     <td>
                         <!-- This will fill total after submission -->

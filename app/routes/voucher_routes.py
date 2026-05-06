@@ -25,44 +25,37 @@ def create_voucher():
         {'size': 'Repay', 'weight':'', 'price':  165, 'total':''},
         {'size': 'Waste', 'weight':'', 'price':    0, 'total':''}
     ]
-    
+    voucher = None # Must exist in all cases
 
     if request.method == 'POST':
-        
-        grand_total = 0.0
+        name = request.form.get('name')
+        #1. Create voucher first
+        voucher = Voucher(name=name)
+        db.session.add(voucher)
+        db.session.flush() # get voucher Id without full commit
+        #print(voucher.id)
         total = 0.0
-        # 2.Loop through predefined list
-        for i in range(len(sizes_prices)):
 
-            name = request.form.get('name')
-            #1. Create voucher
-            voucher = Voucher(name=name)
-            db.session.add(voucher)
-            db.session.commit() # get voucher Id
-            print(voucher.id)
-
-            size = request.form.get(f'size_{i}')
-            price = float(request.form.get(f'price_{i}') or 0)
-            weight = float(request.form.get(f'weight_{i}') or 0)
-            if weight and price:
-                total = weight * price
-                grand_total += float(total)
-            else:
-                total = 0
+        #2. Save items safely
+        for size, price in sizes_prices:
+            weight = request.form.get(f'weight_{size}')
+            if weight:
+                weight = float(weight)
+                price = float(price)
+                item_total = weight * price
+                total += item_total 
         
-        #if weight: # only save filled rows
-        new_item = VoucherItem(
-            voucher_id=voucher.id,
-            size=size,
-            weight=weight,
-            price=price,
-            total=total,
-            grand_total=grand_total,
-            name=name
-        )
+            new_item = VoucherItem(
+                voucher_id=voucher.id,
+                size=size,
+                weight=weight,
+                price=price,
+                total=item_total
+            )
+            db.session.add(new_item)
 
-        db.session.add(new_item)
-        # 3. Save to database
+        # 3. Update voucher total
+        voucher.total = total
         db.session.commit()
 
         return redirect(url_for('voucher.invoice', voucher_id=voucher.id))
@@ -72,8 +65,7 @@ def create_voucher():
 
 @voucher_bp.route('/invoice/<int:voucher_id>')
 def invoice(voucher_id):
-    print("voucher: ", voucher)
-    voucher = Voucher.query.get(voucher_id)
+    voucher = Voucher.query.get_or_404(voucher_id)
     items = VoucherItem.query.filter_by(voucher_id=voucher_id).all()
     return render_template('Vouchers/invoice.html', voucher=voucher, items=items)
 
