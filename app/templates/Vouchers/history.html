@@ -1,0 +1,30 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<h2>Voucher History</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Total</th>
+        <th>Date</th>
+        <th>Action</th>
+    </tr>
+
+    {% for v in vouchers %}
+    <tr>
+        <td>{{ v.id }}</td>
+        <td>{{ v.name }}</td>
+        <td>{{ "%.2f"|format(v.total|float) }}</td>
+        <td>{{ v.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>
+            <a href="{{ url_for('voucher.invoice', voucher_id=v.id) }}">
+                View
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

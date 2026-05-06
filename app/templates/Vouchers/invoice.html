@@ -1,8 +1,24 @@
 <h2>Invoice</h2>
 <p><strong>Voucher ID:</strong>{{ voucher.id }}</p>
 <p><strong>Date:</strong>{{ voucher.created_at }}</p>
+<p><strong>Name:</strong>{{ voucher.name }}</p>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
 <div class="top-bar">
-    <button class="btn btn-orange btn-small" onclick="window.print()">Print</button>
+    <button class="btn btn-orange no-print" onclick="window.print()">Print</button>
+</div>
+
+<div class="no-print" style="margin-top:20px;">
+    <a href="{{ url_for('voucher.create_voucher') }}">
+        <button class="btn btn-green btn-small">+ Add New Voucher</button>
+    </a>
+    <a href="{{ url_for('voucher.voucher_history') }}">
+        <button class="btn btn-orange btn-small">View History</button>
+    </a>
 </div>
 
 <table border="1" width="100%">
@@ -18,12 +34,16 @@
     <tr>
         <td>{{ loop.index }}</td>
         <td>{{ item.size }}</td>
-        <td>{{ item.wieght }}</td>
+        <td>{{ item.weight }}</td>
         <td>{{ item.price }}</td>
-        <td>{{ item.weight * item.price }}</td>
+        <td>{{ item.total }}</td>
     </tr>
     {% endfor %}
+    <tr>
+        <td colspan="4" style="text-align: right;"><strong>Grand Total</strong></td>
+        <td><strong>{{ "%.4f"|format(voucher.total|float) }}</strong></td>
+    </tr>
 </table>
 
-<h3>Total: {{ voucher.grand_total }}</h3>
+
 
