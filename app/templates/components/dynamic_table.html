@@ -1,0 +1,89 @@
+<div class="card shadow">
+
+    <div class="card-header d-flex justify-content-between">
+
+        <h4>{{ meta.title }}</h4>
+
+        <a href="{{ url_for('product.add_product') }}"
+           class="btn btn-primary">
+            Add Product
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover">
+
+            <thead>
+
+                <tr>
+
+                    {% for column in meta.columns %}
+
+                        <th>
+                            {{ column.label }}
+                        </th>
+
+                    {% endfor %}
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for row in rows %}
+
+                    <tr>
+
+                        {% for column in meta.columns %}
+
+                            <td>
+
+                                {% set value = row[column.field] %}
+
+                                {% if column.type == 'currency' %}
+
+                                    {{ "{:,.2f}".format(value|float) }}
+
+                                {% else %}
+
+                                    {{ value }}
+
+                                {% endif %}
+
+                            </td>
+
+                        {% endfor %}
+
+                        <td>
+
+                            {% for action in meta.actions %}
+
+                                <a href="{{ url_for(action.endpoint, id=row.id) }}"
+                                   class="{{ action.class }}">
+
+                                    {{ action.label }}
+
+                                </a>
+
+                            {% endfor %}
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

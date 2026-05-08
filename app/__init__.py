@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from app.routes.raw_routes import raw_bp
 from app.routes.main_routes import main_bp
 from app.routes.voucher_routes import voucher_bp
+from app.metadata.p_route import product_bp
 
 
 migrate = Migrate()
@@ -20,6 +21,7 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(raw_bp)
     app.register_blueprint(voucher_bp)
+    app.register_blueprint(product_bp)
 
     db.init_app(app)
 
